@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SME Marketplace - Dashboard</title>
+    <style>
+        /* Tatra Banka Web Theme – extracted & reconstructed v0.1 */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Condensed:wght@400;700&display=swap');
+
+        :root {
+            --tb-font-base: "Roboto", "Helvetica Neue", Arial, sans-serif;
+            --tb-font-heading: "Roboto Condensed", "Helvetica Neue", Arial, sans-serif;
+            --tb-color-primary: #001E62;
+            --tb-color-primary-600: #002B8C;
+            --tb-color-primary-400: #0054A4;
+            --tb-color-accent: #00AEEF;
+            --tb-color-success: #24A148;
+            --tb-color-warning: #F1C21B;
+            --tb-color-danger: #DA1E28;
+            --tb-gray-900: #1A1A1A;
+            --tb-gray-700: #333333;
+            --tb-gray-500: #666666;
+            --tb-gray-300: #C6C6C6;
+            --tb-gray-100: #F5F7FA;
+            --tb-space-1: 0.25rem;
+            --tb-space-2: 0.5rem;
+            --tb-space-3: 1rem;
+            --tb-space-4: 1.5rem;
+            --tb-space-5: 2rem;
+            --tb-radius-sm: 4px;
+            --tb-radius-md: 6px;
+            --tb-radius-lg: 12px;
+            --tb-elev-1: 0 1px 3px rgba(0,0,0,.15);
+            --tb-elev-2: 0 4px 10px rgba(0,0,0,.15);
+            --tb-transition-fast: 150ms ease-in-out;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--tb-font-base);
+            color: var(--tb-gray-900);
+            background-color: var(--tb-gray-100);
+            line-height: 1.5;
+            max-width: 393px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--tb-gray-900);
+            color: white;
+            padding: var(--tb-space-3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .menu-icon, .profile-icon {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: var(--tb-space-1);
+        }
+
+        .logo {
+            font-family: var(--tb-font-heading);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* Search */
+        .search-container {
+            padding: var(--tb-space-3);
+            background: white;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--tb-space-3);
+            border: 2px solid var(--tb-gray-300);
+            border-radius: var(--tb-radius-md);
+            font-size: 1rem;
+            font-family: var(--tb-font-base);
+            transition: border-color var(--tb-transition-fast);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--tb-color-accent);
+        }
+
+        /* Carousel */
+        .carousel-container {
+            background: white;
+            padding: var(--tb-space-3);
+            margin-bottom: var(--tb-space-2);
+        }
+
+        .carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--tb-radius-md);
+            height: 120px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            background: linear-gradient(135deg, var(--tb-color-primary), var(--tb-color-accent));
+            color: white;
+            padding: var(--tb-space-4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .carousel-slide h3 {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: var(--tb-space-1);
+        }
+
+        .carousel-slide p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: var(--tb-space-1);
+            margin-top: var(--tb-space-2);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--tb-gray-300);
+            cursor: pointer;
+            transition: background var(--tb-transition-fast);
+        }
+
+        .dot.active {
+            background: var(--tb-color-accent);
+        }
+
+        /* Tiles */
+        .tiles-container {
+            background: white;
+            padding: var(--tb-space-3);
+            margin-bottom: var(--tb-space-2);
+        }
+
+        .tiles-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--tb-space-2);
+        }
+
+        .tile {
+            aspect-ratio: 1;
+            background: var(--tb-color-primary);
+            color: white;
+            border-radius: var(--tb-radius-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--tb-space-2);
+            cursor: pointer;
+            transition: background-color var(--tb-transition-fast), transform var(--tb-transition-fast);
+            text-decoration: none;
+        }
+
+        .tile:hover {
+            background: var(--tb-color-primary-600);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .tile-icon {
+            font-size: 1.5rem;
+            margin-bottom: var(--tb-space-1);
+        }
+
+        .tile-text {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        /* Services */
+        .services-container {
+            background: white;
+            padding: var(--tb-space-3);
+        }
+
+        .services-title {
+            font-family: var(--tb-font-heading);
+            color: var(--tb-color-primary);
+            font-size: 1.2rem;
+            margin-bottom: var(--tb-space-3);
+        }
+
+        .service-card {
+            background: white;
+            border-radius: var(--tb-radius-md);
+            box-shadow: var(--tb-elev-1);
+            padding: var(--tb-space-3);
+            margin-bottom: var(--tb-space-3);
+            cursor: pointer;
+            transition: box-shadow var(--tb-transition-fast), transform var(--tb-transition-fast);
+        }
+
+        .service-card:hover {
+            box-shadow: var(--tb-elev-2);
+            transform: translateY(-1px);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--tb-space-2);
+        }
+
+        .service-title {
+            font-weight: 600;
+            color: var(--tb-color-primary);
+            margin-bottom: var(--tb-space-1);
+        }
+
+        .service-company {
+            font-size: 0.9rem;
+            color: var(--tb-gray-500);
+        }
+
+        .service-label {
+            background: var(--tb-color-accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: var(--tb-radius-sm);
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .service-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--tb-space-2);
+        }
+
+        .service-category {
+            color: var(--tb-gray-500);
+            font-size: 0.85rem;
+        }
+
+        .service-price {
+            font-weight: 600;
+            color: var(--tb-color-primary);
+        }
+
+        .service-rating {
+            display: flex;
+            align-items: center;
+            gap: var(--tb-space-1);
+            font-size: 0.85rem;
+        }
+
+        .stars {
+            color: var(--tb-color-warning);
+        }
+
+        /* Search Results */
+        .search-results {
+            background: white;
+            margin: var(--tb-space-2) 0;
+            border-radius: var(--tb-radius-md);
+            box-shadow: var(--tb-elev-1);
+            padding: var(--tb-space-3);
+            display: none;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: var(--tb-space-2);
+            border-bottom: 1px solid var(--tb-gray-100);
+            cursor: pointer;
+        }
+
+        .search-result-item:hover {
+            background: var(--tb-gray-100);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="menu-icon" onclick="toggleMenu()">☰</button>
+        <div class="logo">SME Marketplace</div>
+        <button class="profile-icon" onclick="toggleProfile()">👤</button>
+    </div>
+
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="Vyhľadajte služby a produkty..." id="searchInput" oninput="handleSearch(this.value)">
+        <div class="search-results" id="searchResults"></div>
+    </div>
+
+    <div class="carousel-container">
+        <div class="carousel">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-slide">
+                    <h3>🔧 Servis pneumatík</h3>
+                    <p>Zimné pneumatiky so zľavou až 30%</p>
+                </div>
+                <div class="carousel-slide">
+                    <h3>🏠 Rekonštrukcie domov</h3>
+                    <p>Profesionálne stavebné práce</p>
+                </div>
+                <div class="carousel-slide">
+                    <h3>🌱 Záhradné služby</h3>
+                    <p>Údržba záhrady počas celého roka</p>
+                </div>
+                <div class="carousel-slide">
+                    <h3>💡 Elektrikárske práce</h3>
+                    <p>Inštalácie a opravy 24/7</p>
+                </div>
+                <div class="carousel-slide">
+                    <h3>📊 Účtovníctvo pre firmy</h3>
+                    <p>Komplexné vedenie účtovníctva</p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+
+    <div class="tiles-container">
+        <div class="tiles-grid">
+            <a href="#" class="tile" onclick="navigateToCategory('personal')">
+                <div class="tile-icon">👤</div>
+                <div class="tile-text">Pre mňa</div>
+            </a>
+            <a href="#" class="tile" onclick="navigateToCategory('home')">
+                <div class="tile-icon">🏠</div>
+                <div class="tile-text">Domov</div>
+            </a>
+            <a href="#" class="tile" onclick="navigateToCategory('car')">
+                <div class="tile-icon">🚗</div>
+                <div class="tile-text">Auto</div>
+            </a>
+            <a href="#" class="tile" onclick="navigateToCategory('family')">
+                <div class="tile-icon">👨‍👩‍👧‍👦</div>
+                <div class="tile-text">Rodina</div>
+            </a>
+            <a href="#" class="tile" onclick="navigateToCategory('education')">
+                <div class="tile-icon">🎓</div>
+                <div class="tile-text">Vzdelanie</div>
+            </a>
+            <a href="#" class="tile" onclick="navigateToCategory('garden')">
+                <div class="tile-icon">🌱</div>
+                <div class="tile-text">Záhrada</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="services-container">
+        <h2 class="services-title">Odporúčané služby</h2>
+        
+        <div class="service-card" onclick="viewService('tire-service')">
+            <div class="service-header">
+                <div>
+                    <div class="service-title">Prezutie pneumatík</div>
+                    <div class="service-company">AutoServis Novák</div>
+                </div>
+                <div class="service-label">navštívené pred mesiacom</div>
+            </div>
+            <div class="service-meta">
+                <div class="service-category">Autoservis</div>
+                <div class="service-price">od 25€</div>
+                <div class="service-rating">
+                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                    <span>4.8</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="service-card" onclick="viewService('plumber')">
+            <div class="service-header">
+                <div>
+                    <div class="service-title">Inštalatérske práce</div>
+                    <div class="service-company">Voda & Teplo s.r.o.</div>
+                </div>
+                <div class="service-label">TOP hodnotené</div>
+            </div>
+            <div class="service-meta">
+                <div class="service-category">Inštalatérstvo</div>
+                <div class="service-price">od 40€</div>
+                <div class="service-rating">
+                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                    <span>4.9</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="service-card" onclick="viewService('accounting')">
+            <div class="service-header">
+                <div>
+                    <div class="service-title">Daňové poradenstvo</div>
+                    <div class="service-company">Účtovníctvo Sýkora</div>
+                </div>
+                <div class="service-label">nové v okolí</div>
+            </div>
+            <div class="service-meta">
+                <div class="service-category">Financie</div>
+                <div class="service-price">od 150€</div>
+                <div class="service-rating">
+                    <span class="stars">⭐⭐⭐⭐</span>
+                    <span>4.7</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="service-card" onclick="viewService('gardening')">
+            <div class="service-header">
+                <div>
+                    <div class="service-title">Údržba záhrady</div>
+                    <div class="service-company">Zelená záhrada</div>
+                </div>
+                <div class="service-label">sezónne</div>
+            </div>
+            <div class="service-meta">
+                <div class="service-category">Záhradníctvo</div>
+                <div class="service-price">od 30€</div>
+                <div class="service-rating">
+                    <span class="stars">⭐⭐⭐⭐</span>
+                    <span>4.6</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="service-card" onclick="viewService('social-media')">
+            <div class="service-header">
+                <div>
+                    <div class="service-title">Social Media Marketing</div>
+                    <div class="service-company">Digital Agency SK</div>
+                </div>
+                <div class="service-label">trending</div>
+            </div>
+            <div class="service-meta">
+                <div class="service-category">Marketing</div>
+                <div class="service-price">od 200€</div>
+                <div class="service-rating">
+                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                    <span>4.8</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const totalSlides = slides.length;
+        const track = document.getElementById('carouselTrack');
+        const dotsContainer = document.getElementById('carouselDots');
+
+        // Create dots
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update dots
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            updateCarousel();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        // Auto-advance carousel
+        setInterval(nextSlide, 4000);
+
+        // Touch/swipe support for carousel
+        let startX = 0;
+        let endX = 0;
+
+        track.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
+
+        track.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            if (startX - endX > 50) nextSlide();
+            else if (endX - startX > 50) {
+                currentSlide = currentSlide > 0 ? currentSlide - 1 : totalSlides - 1;
+                updateCarousel();
+            }
+        });
+
+        // Search functionality
+        const searchData = [
+            { name: 'Prezutie pneumatík', company: 'AutoServis Novák', category: 'Autoservis' },
+            { name: 'Inštalatérske práce', company: 'Voda & Teplo s.r.o.', category: 'Inštalatérstvo' },
+            { name: 'Daňové poradenstvo', company: 'Účtovníctvo Sýkora', category: 'Financie' },
+            { name: 'Údržba záhrady', company: 'Zelená záhrada', category: 'Záhradníctvo' },
+            { name: 'Social Media Marketing', company: 'Digital Agency SK', category: 'Marketing' },
+            { name: 'Elektrické inštalácie', company: 'ElektroMaster', category: 'Elektrikárstvo' },
+            { name: 'Maľovanie bytov', company: 'Color House', category: 'Stavebníctvo' },
+            { name: 'Čistenie kobercov', company: 'CleanPro', category: 'Čistenie' }
+        ];
+
+        function handleSearch(query) {
+            const searchResults = document.getElementById('searchResults');
+            
+            if (query.length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+
+            const filteredResults = searchData.filter(item => 
+                item.name.toLowerCase().includes(query.toLowerCase()) ||
+                item.company.toLowerCase().includes(query.toLowerCase()) ||
+                item.category.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (filteredResults.length > 0) {
+                searchResults.innerHTML = filteredResults.map(item => `
+                    <div class="search-result-item" onclick="selectSearchResult('${item.name}', '${item.company}')">
+                        <div style="font-weight: 500;">${item.name}</div>
+                        <div style="font-size: 0.85rem; color: var(--tb-gray-500);">${item.company} • ${item.category}</div>
+                    </div>
+                `).join('');
+                searchResults.classList.add('active');
+            } else {
+                searchResults.innerHTML = '<div class="search-result-item">Žiadne výsledky nenájdené</div>';
+                searchResults.classList.add('active');
+            }
+        }
+
+        function selectSearchResult(name, company) {
+            document.getElementById('searchInput').value = name;
+            document.getElementById('searchResults').classList.remove('active');
+            alert(`Vybratá služba: ${name} od ${company}`);
+        }
+
+        // Navigation functions
+        function toggleMenu() {
+            alert('Menu otvorené');
+        }
+
+        function toggleProfile() {
+            alert('Profil / Prihlásenie');
+        }
+
+        function navigateToCategory(category) {
+            const categoryNames = {
+                'personal': 'Pre mňa',
+                'home': 'Domov',
+                'car': 'Auto',
+                'family': 'Rodina',
+                'education': 'Vzdelanie',
+                'garden': 'Záhrada'
+            };
+            alert(`Navigácia do kategórie: ${categoryNames[category]}`);
+        }
+
+        function viewService(serviceId) {
+            alert(`Zobrazenie detailu služby: ${serviceId}`);
+        }
+
+        // Close search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                document.getElementById('searchResults').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
